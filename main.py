@@ -1,17 +1,20 @@
 def on_received_string(receivedString):
-    (a,b) = receivedString.split(",")
-    #x = int(receivedString[0:1]) * 25 - 127
-    #y = int(receivedString[1:2]) * 25 - 127
-    #z = int(receivedString[2:3]) * 25 - 127
+    n = receivedString.index_of(",")
 
-    x = int(a)
-    y = int(b)
-    basic.show_number(x)
+    x = 0
+    y = 0
+    ys = receivedString[0:n]
+    xs = receivedString[n+1:receivedString.length]
 
-    if(x < 2 and y < 2):
+    x = int(xs) / 1024 * 255 - 128
+    y = int(ys) / 1024 * 255 - 128
+
+
+    if(x < 10 and y < 10):
         Rover.motor_stop_all(MotorActions.STOP)
     else:
         (left_speed, right_speed) = convert(x,y)
+        #basic.show_number(left_speed)
         Rover.motor_run_dual(left_speed, right_speed)
 
 radio.on_received_string(on_received_string)
