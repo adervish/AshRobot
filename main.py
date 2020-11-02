@@ -10,7 +10,7 @@ def on_received_string(receivedString):
     y = int(ys) / 1024 * 255 - 128
 
 
-    if(x < 10 and y < 10):
+    if(abs(x) < 10 and abs(y) < 10):
         Rover.motor_stop_all(MotorActions.STOP)
     else:
         (left_speed, right_speed) = convert(x,y)
@@ -34,6 +34,7 @@ basic.forever(on_forever)
 def convert(nJoyX, nJoyY):
     fPivYLimit = 32.0
 
+    #basic.show_number(nJoyY)
     # TEMP VARIABLES
     nMotPremixL = 0 # Motor (left)  premixed output        (-128..+127)
     nMotPremixR = 0 # Motor (right) premixed output        (-128..+127)
