@@ -1,19 +1,19 @@
 def on_received_string(receivedString):
-    global P3
-    P3 = receivedString.split(",")
+    (a,b) = receivedString.split(",")
+    #x = int(receivedString[0:1]) * 25 - 127
+    #y = int(receivedString[1:2]) * 25 - 127
+    #z = int(receivedString[2:3]) * 25 - 127
 
-    Y = 0
-    Y = parse_float(P3[0])
-    Y = (Y - 512)/512*127
-    Y = Y
+    x = int(a)
+    y = int(b)
+    basic.show_number(x)
 
-    X = 0
-    X = parse_float(P3[1])
-    X = (X - 512)/512*127
-    X = X
+    if(x < 2 and y < 2):
+        Rover.motor_stop_all(MotorActions.STOP)
+    else:
+        (left_speed, right_speed) = convert(x,y)
+        Rover.motor_run_dual(left_speed, right_speed)
 
-    (left_speed, right_speed) = convert(X,Y )
-    Rover.motor_run_dual(left_speed, right_speed)
 radio.on_received_string(on_received_string)
 
 def on_button_pressed_b():
@@ -39,11 +39,11 @@ def convert(nJoyX, nJoyY):
 
     # Calculate Drive Turn output due to Joystick X input
     if(nJoyY>=0):
-    # Forward
+        # Forward
         nMotPremixL = 127.0 if nJoyX>=0 else 127.0 + nJoyX
         nMotPremixR = 127.0 - nJoyX if nJoyX>=0 else 127.0
     else:
-    # Reverse
+        # Reverse
         nMotPremixL = 127.0 - nJoyX if nJoyX>=0 else 127.0
         nMotPremixR = 127.0 if nJoyX>=0 else 127.0 + nJoyX
 

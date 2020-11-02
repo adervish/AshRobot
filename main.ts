@@ -1,16 +1,18 @@
 radio.onReceivedString(function on_received_string(receivedString: string) {
+    let [a, b] = _py.py_string_split(receivedString, ",")
+    // x = int(receivedString[0:1]) * 25 - 127
+    // y = int(receivedString[1:2]) * 25 - 127
+    // z = int(receivedString[2:3]) * 25 - 127
+    let x = parseInt(a)
+    let y = parseInt(b)
+    basic.showNumber(x)
+    if (x < 2 && y < 2) {
+        Rover.MotorStopAll(MotorActions.Stop)
+    } else {
+        let [left_speed, right_speed] = convert(x, y)
+        Rover.MotorRunDual(left_speed, right_speed)
+    }
     
-    P3 = _py.py_string_split(receivedString, ",")
-    let Y = 0
-    Y = parseFloat(P3[0])
-    Y = (Y - 512) / 512 * 127
-    Y = Y
-    let X = 0
-    X = parseFloat(P3[1])
-    X = (X - 512) / 512 * 127
-    X = X
-    let [left_speed, right_speed] = convert(X, Y)
-    Rover.MotorRunDual(left_speed, right_speed)
 })
 input.onButtonPressed(Button.B, function on_button_pressed_b() {
     Rover.MotorStopAll(MotorActions.Stop)
